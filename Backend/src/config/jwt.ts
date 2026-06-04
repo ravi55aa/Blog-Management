@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import env from "./env.config";
 import { Request, Response } from "express";
+import { logger } from "../Utils/logger";
 
 interface IJwtPayload {
     id: string;
@@ -64,6 +65,7 @@ const handleCreateNewAccessToken = (refreshToken: string) => {
         const decoded = handleVerifyToken(refreshToken, env.REFRESH_TOKEN_SECRET as string) as IJwtPayload;
 
         const newAccessToken = generateAccessToken(decoded);
+        logger.info("New access token generated 📦");
 
         return newAccessToken;
         
