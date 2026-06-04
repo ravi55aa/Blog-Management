@@ -4,11 +4,12 @@ import { IAuthService } from "../Interface/IServices/IAuthService";
 import userModel from "../Models/userModel";
 import TYPES from "../config/DI/types";
 import { IAuthRepository } from "../Interface/IRepository/IAuthRepository";
-import { Request } from "express";
+import { Request,Response } from "express";
 import { UserDto } from "../DTO/UserDto";
 import { hashPassword } from "../Utils/bcrypt";
-import { serviceReturnType } from "../Types/serviceReturnType";
+import { serviceReturnType } from "../types/serviceReturnType";
 import { ApiResponse } from "../Helper/ApiResponse";
+import { handleJwtTokensGenerator } from "../config";
 
 
 @injectable()
@@ -19,7 +20,7 @@ class AuthService implements IAuthService {
         private _authRepository: IAuthRepository
     ) {}
 
-    async registerUser(req:Request): Promise<serviceReturnType> { 
+    async registerUser(req:Request,res:Response): Promise<serviceReturnType> { 
 
         const userData:Partial<IUser> = UserDto.registerUser(req);
         //! validation
@@ -44,6 +45,12 @@ class AuthService implements IAuthService {
         const newUser = new userModel(user);
 
         await newUser.save();
+
+        const payload={
+            id:String(newUser._id),name:newUser.name,email:newUser.email}
+
+        //create Token + session for refreshToken
+        handleJwtTokensGenerator(payload,req,res);
 
         return ApiResponse.created(newUser.toObject() as IUser);
     }

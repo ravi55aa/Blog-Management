@@ -1,11 +1,11 @@
 import express,{Request,Response,NextFunction} from "express";
 const app = express();
-import env from "./config/env.config";
 import { logger } from "./Utils/logger";
 import { StatusCodes } from "./Constant/StatusCode";
 import handleErrorsMiddleware from "./Middleware/errorHandler";
 import cookieParser from "cookie-parser"
 import cors from "cors";
+import { sessionConfig,env } from "./config";
 
 
 //application middlewares
@@ -15,6 +15,7 @@ app.use(cors({
 }));
 
 app.use(cookieParser()); //req.cookie parser
+app.use(sessionConfig());
 app.use(express.json()); // read req.body
 app.use(express.urlencoded({extended:true})); //read form data
 

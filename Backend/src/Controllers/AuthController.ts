@@ -13,7 +13,7 @@ class AuthController {
 
     public async registerUser(req:Request,res:Response,next:NextFunction) {
         try{
-            const {status,resBody} = await this._authService.registerUser(req);
+            const {status,resBody} = await this._authService.registerUser(req,res);
 
             res.status(status).json(resBody);
 

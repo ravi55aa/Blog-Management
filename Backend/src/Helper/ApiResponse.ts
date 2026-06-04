@@ -1,5 +1,5 @@
 import { StatusCodes } from "../Constant/StatusCode";
-import { IReturnType } from "../Types/returnType";
+import { IReturnType } from "../types/returnType";
 
 export class ApiResponse {
 
