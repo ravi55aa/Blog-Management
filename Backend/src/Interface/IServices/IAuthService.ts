@@ -1,5 +1,8 @@
+import {Request} from "express";
+import { serviceReturnType } from "../../Types/serviceReturnType";
+
 export interface IAuthService {
-    registerUser(name: string, email: string, password: string, role: string): Promise<{ accessToken: string; refreshToken: string }>;
+    registerUser(req:Request): Promise<serviceReturnType>;
 
     // loginUser(email: string, password: string): Promise<{ accessToken: string; refreshToken: string }>;
     // refreshAccessToken(refreshToken: string): Promise<string>;
