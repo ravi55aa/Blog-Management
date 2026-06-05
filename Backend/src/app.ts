@@ -1,3 +1,6 @@
+/// <reference path="./types/express-session.d.ts" />
+
+
 import express, { Request, Response, NextFunction } from 'express';
 const app = express();
 import { logger } from './Utils/logger';
@@ -6,13 +9,14 @@ import handleErrorsMiddleware from './Middleware/errorHandler';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { sessionConfig, env } from './config';
+import { OauthRouter } from './Routes';
 
 //application middlewares
 app.use(
-  cors({
-    origin: 'http://localhost:5173',
-    credentials: true,
-  })
+    cors({
+        origin: 'http://localhost:5173',
+        credentials: true,
+    })
 );
 
 app.use(cookieParser()); //req.cookie parser
@@ -20,19 +24,37 @@ app.use(sessionConfig());
 app.use(express.json()); // read req.body
 app.use(express.urlencoded({ extended: true })); //read form data
 
-app.get('/get', (req, res) => {
-  res
-    .status(StatusCodes.OK)
-    .json({ message: 'Health okay', success: true, data: null, error: null });
-});
-
+//global router
 app.use((req: Request, res: Response, next: NextFunction) => {
-  logger.info({ method: req.method, path: req.path });
-  next();
+    logger.info({ method: req.method, path: req.path },
+        "Health Check"
+    );
+    console.log(process.env.NODE_ENV);
+    next();
 });
 
+
+/*
+ROUTES
+*/
+app.use("/google",OauthRouter);
+
+
+/*
+health check
+*/
+app.get('/health', (req, res) => {
+    res.status(StatusCodes.OK).json({
+        message: 'Health okay',
+        success: true,
+        data: null,
+        error: null,
+    });
+});
+
+//error Handler
 app.use(handleErrorsMiddleware);
 
-app.listen(() => {
-  console.log(`http://localhost:${env.PORT}`);
+app.listen(env.PORT ,() => {
+    console.log(`http://localhost:${env.PORT}`);
 });

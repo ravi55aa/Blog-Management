@@ -1,9 +1,9 @@
 import 'express-session';
 
 declare module 'express-session' {
-  interface SessionData {
-    refreshToken: string;
-  }
+    interface SessionData {
+        refreshToken: string;
+    }
 }
 
 export {};

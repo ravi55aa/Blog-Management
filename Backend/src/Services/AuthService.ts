@@ -13,47 +13,47 @@ import { handleJwtTokensGenerator } from '../config';
 
 @injectable()
 class AuthService implements IAuthService {
-  constructor(
-    @inject(TYPES.AuthRepository)
-    private _authRepository: IAuthRepository
-  ) {}
+    constructor(
+        @inject(TYPES.AuthRepository)
+        private _authRepository: IAuthRepository
+    ) {}
 
-  async registerUser(req: Request, res: Response): Promise<serviceReturnType> {
-    const userData: Partial<IUser> = UserDto.registerUser(req);
-    //! validation
+    async registerUser(req: Request, res: Response): Promise<serviceReturnType> {
+        const userData: Partial<IUser> = UserDto.registerUser(req);
+        //! validation
 
-    // If User Exists
-    const existingUser = await userModel.findOne({ email: userData.email! }).lean<IUser>();
+        // If User Exists
+        const existingUser = await userModel.findOne({ email: userData.email! }).lean<IUser>();
 
-    if (existingUser) {
-      throw new Error('User already exists');
+        if (existingUser) {
+            throw new Error('User already exists');
+        }
+
+        userData.password = await hashPassword(userData.password!);
+
+        // Create new user
+        const user: Partial<IUser> = {
+            name: userData.name!,
+            email: userData.email!,
+            password: userData.password!,
+            googleId: userData.googleId!,
+        };
+
+        const newUser = new userModel(user);
+
+        await newUser.save();
+
+        const payload = {
+            id: String(newUser._id),
+            name: newUser.name,
+            email: newUser.email,
+        };
+
+        //create Token + session for refreshToken
+        handleJwtTokensGenerator(payload, req, res);
+
+        return ApiResponse.created(newUser.toObject() as IUser);
     }
-
-    userData.password = await hashPassword(userData.password!);
-
-    // Create new user
-    const user: Partial<IUser> = {
-      name: userData.name!,
-      email: userData.email!,
-      password: userData.password!,
-      googleId: userData.googleId!,
-    };
-
-    const newUser = new userModel(user);
-
-    await newUser.save();
-
-    const payload = {
-      id: String(newUser._id),
-      name: newUser.name,
-      email: newUser.email,
-    };
-
-    //create Token + session for refreshToken
-    handleJwtTokensGenerator(payload, req, res);
-
-    return ApiResponse.created(newUser.toObject() as IUser);
-  }
 }
 
 export default AuthService;
