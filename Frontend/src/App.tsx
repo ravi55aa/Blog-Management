@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
-        <Route path="/user/dashboard" element={<Dashboard />} />
+        <Route path="/blog/dashboard" element={<Dashboard />} />
 
       </Routes>
       </Suspense>

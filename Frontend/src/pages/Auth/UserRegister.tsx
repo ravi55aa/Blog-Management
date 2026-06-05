@@ -3,8 +3,19 @@ import { Button, TextField } from '@mui/material';
 import type { authField } from "../../types/authField.type";
 import { UserRegisterFields } from "../../constant/register";
 import {GoogleIcon} from "../../components/googleIcon";
+import { AuthService } from "../../api/Services/AuthService";
+//import { useAppNavigate } from "../../hooks/useNavigate";
 
 const UserRegister = () => {
+
+    //const navigate=useAppNavigate();
+
+    const handleGoogleAuth=async ()=>{
+        window.location.href ="http://localhost:4000/google/auth";
+        
+        return true;
+    }
+
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
         <div className="sm:mx-auto sm:w-full sm:max-w-md flex flex-col items-center">
@@ -66,7 +77,10 @@ const UserRegister = () => {
                 </div>
 
                 <div className="mt-6 grid grid-cols-1 gap-3">
-                <Button variant="outlined" fullWidth startIcon={<GoogleIcon />} sx={{ color: '#475569', borderColor: '#cbd5e1', textTransform: 'none', fontWeight: 600, py: 1 }}>
+                <Button 
+                type="button"
+                onClick={handleGoogleAuth}
+                variant="outlined" fullWidth startIcon={<GoogleIcon />} sx={{ color: '#475569', borderColor: '#cbd5e1', textTransform: 'none', fontWeight: 600, py: 1 }}>
                     Google
                 </Button>
                 <div className="grid grid-cols-2 gap-3">

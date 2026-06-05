@@ -2,5 +2,5 @@ export interface IUserForm {
     name:string,
     email:string,
     password:string,
-    password2:string,
+    confirmPassword:string,
 }

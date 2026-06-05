@@ -1,7 +1,10 @@
 import { Button, Card, CardContent, Typography, Container, Chip } from '@mui/material';
 import { Image as ImageIcon, LayoutDashboard, ArrowRight, BookOpen, Sparkles, CheckCircle2, FileText } from 'lucide-react';
+import { useAppNavigate } from '../../hooks/useNavigate';
 
 export default function App() {
+
+    const navigate=useAppNavigate();
     
     return (
         <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-teal-200">
@@ -23,10 +26,16 @@ export default function App() {
                 <a href="#testimonials" className="hover:text-teal-600 transition-colors">Testimonials</a>
                 </div>
                 <div className="flex items-center gap-4">
-                <Button variant="text" sx={{ color: '#0f766e', textTransform: 'none', fontWeight: 600 }}>
+                
+                <Button 
+                
+                    onClick={()=>navigate("/login")}
+                    variant="text" sx={{ color: '#0f766e', textTransform: 'none', fontWeight: 600 }}>
                     Sign In
                 </Button>
+
                 <Button 
+                    onClick={()=>navigate("/register")}
                     variant="contained" 
                     disableElevation
                     sx={{ 
@@ -39,6 +48,7 @@ export default function App() {
                 >
                     Get Started
                 </Button>
+
                 </div>
             </div>
             </div>
