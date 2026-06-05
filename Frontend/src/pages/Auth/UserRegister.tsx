@@ -1,14 +1,67 @@
+import {useState} from "react";
 import {BookOpen, UserPlus } from "lucide-react";
 import { Button, TextField } from '@mui/material';
 import type { authField } from "../../types/authField.type";
 import { UserRegisterFields } from "../../constant/register";
 import {GoogleIcon} from "../../components/googleIcon";
 import { AuthService } from "../../api/Services/AuthService";
-//import { useAppNavigate } from "../../hooks/useNavigate";
+import { useAppNavigate } from "../../hooks/useNavigate";
 
 const UserRegister = () => {
 
-    //const navigate=useAppNavigate();
+    const navigate=useAppNavigate();
+
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const { name, value } = e.target;
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleRegister = async (
+        e: React.FormEvent<HTMLFormElement>
+    ) => {
+        e.preventDefault();
+
+        const {
+            name,
+            email,
+            password,
+            confirmPassword,
+        } = formData;
+
+        if (!name || !email || !password || !confirmPassword) {
+            alert('All fields are required');
+            return;
+        }
+
+        if (password !== confirmPassword) { //add toast
+            alert('Passwords do not match');
+            return;
+        }
+
+        //Add the proper ZOD VALIDATION
+
+        const response = await AuthService.register({name,email,password,confirmPassword });
+
+        
+        console.log(response);
+
+        return response.success;
+
+    };
+
 
     const handleGoogleAuth=async ()=>{
         window.location.href ="http://localhost:4000/google/auth";
@@ -32,35 +85,46 @@ const UserRegister = () => {
             </h2>
             <p className="mt-2 text-center text-sm text-slate-600">
             Already have an account?{' '}
-            {/* <button onClick={() => onNavigate('login')} className="font-medium text-teal-600 hover:text-teal-500">
+            <button onClick={() => navigate('/login')} className="font-medium text-teal-600 hover:text-teal-500">
                 Sign in
-            </button> */}
+            </button>
             </p>
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-xl sm:px-10 border border-slate-100">
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-                {UserRegisterFields.map((field: authField, index: number) => (
-                <TextField 
-                    key={index} 
-                    id={`register-${field.name}`}
-                    fullWidth
-                    label={field.placeholder} 
-                    type={field.type} 
-                    name={field.name} 
-                    variant="outlined" 
-                    size="medium"
-                />
-                ))}
+            <form className="space-y-5" onSubmit={handleRegister}>
+                {UserRegisterFields.map(
+                        (field: authField, index: number) => (
+                            <TextField
+                                key={index}
+                                id={`register-${field.name}`}
+                                fullWidth
+                                label={field.placeholder}
+                                type={field.type}
+                                name={field.name}
+                                variant="outlined"
+                                size="medium"
+                                value={
+                                    formData[
+                                        field.name as keyof typeof formData
+                                    ]
+                                }
+                                onChange={handleChange}
+                            />
+                        )
+                    )}
 
                 <Button 
+                
                 fullWidth 
                 variant="contained" 
                 size="large"
                 startIcon={<UserPlus size={20} />}
                 disableElevation
                 sx={{ bgcolor: '#0d9488', '&:hover': { bgcolor: '#0f766e' }, textTransform: 'none', fontWeight: 600, py: 1.5, mt: 2 }}
+
+                type="submit"
                 >
                 Register
                 </Button>
