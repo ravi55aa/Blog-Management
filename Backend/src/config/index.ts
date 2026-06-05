@@ -13,4 +13,3 @@ export {
     handleJwtTokensGenerator,
     handleVerifyToken
 }
-

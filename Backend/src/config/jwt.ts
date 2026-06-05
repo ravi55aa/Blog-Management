@@ -41,6 +41,7 @@ export const handleVerifyToken = (token: string, secret: string) => {
     try {
         const decoded = jwt.verify(token, secret);
         return decoded;
+        
     } catch (error) {
         throw new Error("Invalid token");
     }
@@ -54,11 +55,12 @@ export const handleCreateNewAccessToken = (refreshToken: string) => {
         logger.info("New access token generated 📦");
 
         //store token res.cookie
+        //iam doing this at the authMiddleware
 
         return newAccessToken;
         
     } catch (error) {
         //issue in refresh token is invalid or expired
-        throw new Error("Invalid refresh token");
+        throw new Error("Session is done kindly re-login");
     }
 };
