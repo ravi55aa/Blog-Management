@@ -8,14 +8,15 @@ import { StatusCodes } from './Constant/StatusCode';
 import handleErrorsMiddleware from './Middleware/errorHandler';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import { sessionConfig, env } from './config';
+import { sessionConfig, env,connectDB } from './config';
 import { OauthRouter } from './Routes';
 
 //application middlewares
 app.use(
     cors({
-        origin: 'http://localhost:5173',
+        origin: 'http://localhost:5173', //import form env
         credentials: true,
+        methods:["GET","POST","PUT","PATCH","DELETE"]
     })
 );
 
@@ -34,15 +35,15 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 
-/*
-ROUTES
-*/
+//DB
+connectDB();
+
+
+/*ROUTES*/
 app.use("/google",OauthRouter);
 
 
-/*
-health check
-*/
+/*health check*/
 app.get('/health', (req, res) => {
     res.status(StatusCodes.OK).json({
         message: 'Health okay',
@@ -55,6 +56,6 @@ app.get('/health', (req, res) => {
 //error Handler
 app.use(handleErrorsMiddleware);
 
-app.listen(env.PORT ,() => {
+app.listen(env.PORT ,() => { //import origin from env
     console.log(`http://localhost:${env.PORT}`);
 });

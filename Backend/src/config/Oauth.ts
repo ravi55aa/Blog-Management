@@ -15,6 +15,8 @@ dotenv.config();
 const GOOGLE_OAUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const CLIENT_ID = env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = env.GOOGLE_CLIENT_SECRET;
+
+console.log()
 const REDIRECT_URI = 'http://localhost:4000/google/callback';
 
 export const handleOAuth = (req: Request, res: Response) => {
@@ -31,6 +33,8 @@ export const handleOAuth = (req: Request, res: Response) => {
 
 export const handleAuthCallback = async (req: Request, res: Response) => {
     const { code } = req.query;
+
+    console.log('@Oauth client_id:%s client_secret:%s',CLIENT_ID,CLIENT_SECRET);
 
     try {
 
@@ -97,7 +101,7 @@ export const handleAuthCallback = async (req: Request, res: Response) => {
 
         //--END TOKEN GENERATION
 
-        res.redirect(`${env.FRONTEND_URL}/school/register`);
+        res.redirect(`${env.FRONTEND_URL}/dashboard`);
 
     } catch (error: unknown) {
 

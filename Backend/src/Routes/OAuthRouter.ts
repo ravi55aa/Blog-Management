@@ -4,7 +4,7 @@ const router = Router();
 
 //google
 router.get('/auth', handleOAuth);
-router.get('/auth/callback', handleAuthCallback);
+router.get('/callback', handleAuthCallback);
 
 //facebook
 //git
