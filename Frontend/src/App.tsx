@@ -1,6 +1,13 @@
 import {Suspense} from 'react';
-import {Register,Login,LandingPage} from "./pages";
 import {Routes, Route} from 'react-router-dom';
+
+import {
+  Register,
+  Login,
+  LandingPage,
+  
+  Dashboard
+} from "./pages";
 
 
 const App = () => {
@@ -14,6 +21,8 @@ const App = () => {
 
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+
+        <Route path="/user/dashboard" element={<Dashboard />} />
 
       </Routes>
       </Suspense>
