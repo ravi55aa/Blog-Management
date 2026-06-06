@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import env from './env.config';
 import { Request, Response } from 'express';
-import { logger } from '../Utils/logger';
+import { errorLogger, logger } from '../Utils/logger';
 import { IJwtPayload } from '../Interface/Other/IPayloadJwt';
 
 const generateAccessToken = (payload: IJwtPayload): string => {
@@ -41,6 +41,7 @@ export const handleVerifyToken = (token: string, secret: string) => {
         const decoded = jwt.verify(token, secret);
         return decoded;
     } catch (error) {
+        errorLogger.error(error);
         throw new Error('Invalid token');
     }
 };
@@ -61,6 +62,7 @@ export const handleCreateNewAccessToken = (refreshToken: string) => {
         return newAccessToken;
     } catch (error) {
         //issue in refresh token is invalid or expired
+        errorLogger.error(error);
         throw new Error('Session is done kindly re-login');
     }
 };

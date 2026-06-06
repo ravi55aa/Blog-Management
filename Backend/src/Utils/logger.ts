@@ -40,6 +40,7 @@ const transport =
         : undefined;  
 
 export const logger = pino(
+    
     {
         level: process.env.LOG_LEVEL || 'info',
 
@@ -53,6 +54,7 @@ export const logger = pino(
 
         redact: ['password', 'token', 'accessToken', 'refreshToken', 'authorization'],
     },
+
     transport ? pino.transport(transport) : appStream
 );
 

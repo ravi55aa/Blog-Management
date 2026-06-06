@@ -62,20 +62,22 @@ class AuthService implements IAuthService {
     async userLogin(loginCredential:{email:string,password:string}):Promise<serviceReturnType<IUser>>{
         //validation: 
 
-        const  {email,password} = loginCredential;
-
+        const {email,password} = loginCredential;
+        
         if(!email.trim() || !password.trim() || password.length<6) {
             throw new BadRequestError(AuthMessage.InvalidCredentials);
         } //replace by zod
-
+        
         const user:IUser|null = await userModel.findOne({email}).lean<IUser>();
         
         if(!user || !user.password){
-            throw new NotFoundError(AuthMessage.InvalidUser);
+            throw new NotFoundError(AuthMessage.not_Found);
         }
-
+        
+        
         const isPasswordVerify = await compareHashPassword(password,user.password);
-
+        
+        
         if(!isPasswordVerify){
             throw new FailureError(AuthMessage.InvalidCurrentPassword);
         }

@@ -102,6 +102,7 @@ const UserRegister = () => {
                             <TextField
                                 key={index}
                                 id={`register-${field.name}`}
+                                className="mb-1!"
                                 fullWidth
                                 label={field.placeholder}
                                 type={field.type}

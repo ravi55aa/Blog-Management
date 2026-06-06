@@ -34,7 +34,7 @@ const SignIn = () => {
 
         e.preventDefault();
 
-        if(loginData.email?.trim()){
+        if(!loginData.email?.trim()){
             return false;
         }
 
@@ -114,6 +114,7 @@ const SignIn = () => {
                 fullWidth 
                 variant="contained" 
                 size="large"
+                type="submit"
                 startIcon={<LogIn size={20} />}
                 disableElevation
                 sx={{ bgcolor: '#0d9488', '&:hover': { bgcolor: '#0f766e' }, textTransform: 'none', fontWeight: 600, py: 1.5 }}

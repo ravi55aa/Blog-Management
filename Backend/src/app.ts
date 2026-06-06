@@ -1,5 +1,7 @@
 /// <reference path="./types/express-session.d.ts" />
 
+import 'reflect-metadata';
+import './config/DI/register';
 
 import express, { Request, Response, NextFunction } from 'express';
 const app = express();
@@ -9,7 +11,7 @@ import handleErrorsMiddleware from './Middleware/errorHandler';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { sessionConfig, env,connectDB } from './config';
-import { OauthRouter } from './Routes';
+import { OauthRouter,authRouter } from './Routes';
 
 //application middlewares
 app.use(
@@ -41,6 +43,7 @@ connectDB();
 
 /*ROUTES*/
 app.use("/google",OauthRouter);
+app.use("/auth",authRouter);
 
 
 /*health check*/
