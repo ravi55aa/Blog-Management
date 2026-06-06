@@ -7,4 +7,8 @@ export class AuthService extends BaseService{
         return this.post("/auth/register",userPayload ,{});
     }
 
+    static login(userPayload:{email:string,password:string}){
+        return this.post("/auth/login",userPayload ,{});
+    }
+
 }

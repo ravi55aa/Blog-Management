@@ -53,12 +53,14 @@ const UserRegister = () => {
 
         //Add the proper ZOD VALIDATION
 
-        const response = await AuthService.register({name,email,password,confirmPassword });
+        const res = await AuthService.register({name,email,password,confirmPassword });
 
-        
-        console.log(response);
+        if(!res.success){
+            return false;
+        }
 
-        return response.success;
+        navigate("/login");
+        return res.success;
 
     };
 

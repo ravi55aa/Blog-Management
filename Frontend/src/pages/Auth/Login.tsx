@@ -1,11 +1,58 @@
+import {useState} from "react";
 import { BookOpen, LogIn } from "lucide-react";
 import type { authField } from "../../types/authField.type";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import { LoginFields } from "../../constant/register";
 import {GoogleIcon} from "../../components/googleIcon";
+import { AuthService } from "../../api/Services/AuthService";
+import { useAppNavigate } from "../../hooks/useNavigate";
 
 const SignIn = () => {
+    const [loginData,setLoginData]=useState<{email:string,password:string}>({email:"",password:""});
+
+    const navigate=useAppNavigate();
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const { name, value } = e.target;
+
+        const element:HTMLElement|null=document.getElementById(`login-span-${name}`);
+
+        if(element && element?.innerText.length ){
+            element.innerText="";
+        }
+
+        setLoginData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleLogin = async ( e: React.FormEvent<HTMLFormElement>) => {
+
+        e.preventDefault();
+
+        if(loginData.email?.trim()){
+            return false;
+        }
+
+        if(!loginData.password?.trim()){
+            return false;
+        }
+
+        const res = await AuthService.login(loginData);
+
+        if(!res.success){
+            //handle field error
+            return res.success;
+        }
+
+        navigate("/blog/dashboard");
+        return res.success;
+    }
+
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
         <div className="sm:mx-auto sm:w-full sm:max-w-md flex flex-col items-center">
@@ -30,8 +77,9 @@ const SignIn = () => {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-xl sm:px-10 border border-slate-100">
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-5" onSubmit={handleLogin}>
                 {LoginFields.map((field: authField, index: number) => (
+                    <>
                 <TextField 
                     key={index} 
                     id={`login-${field.name}`}
@@ -40,8 +88,16 @@ const SignIn = () => {
                     type={field.type} 
                     name={field.name} 
                     variant="outlined" 
+                    value={
+                            loginData [
+                                field.name as keyof typeof loginData
+                            ]
+                    }
+                    onChange={handleChange}
                     size="medium"
                 />
+                <span id={`login-span-${field.name}`} className="text-red-500 text-sm"></span>
+                </>
                 ))}
 
                 <div className="flex items-center justify-between">
