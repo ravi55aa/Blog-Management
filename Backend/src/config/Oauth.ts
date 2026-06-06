@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { IUser } from '../Interface/ISchemas/IUserSchema';
 import userModel from '../Models/userModel';
 import axios, { AxiosResponse } from 'axios';
@@ -33,8 +33,6 @@ export const handleOAuth = (req: Request, res: Response) => {
 
 export const handleAuthCallback = async (req: Request, res: Response) => {
     const { code } = req.query;
-
-    console.log('@Oauth client_id:%s client_secret:%s',CLIENT_ID,CLIENT_SECRET);
 
     try {
 
@@ -101,7 +99,7 @@ export const handleAuthCallback = async (req: Request, res: Response) => {
 
         //--END TOKEN GENERATION
 
-        res.redirect(`${env.FRONTEND_URL}/dashboard`);
+        res.redirect(`${env.FRONTEND_URL}/blog/dashboard`);
 
     } catch (error: unknown) {
 
