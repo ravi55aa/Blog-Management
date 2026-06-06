@@ -6,19 +6,22 @@ import TYPES from '../config/DI/types';
 import { IAuthRepository } from '../Interface/IRepository/IAuthRepository';
 import { Request, Response } from 'express';
 import { UserDto } from '../DTO/UserDto';
-import { hashPassword } from '../Utils/bcrypt';
+import { compareHashPassword, hashPassword } from '../Utils/bcrypt';
 import { serviceReturnType } from '../types/serviceReturnType';
 import { ApiResponse } from '../Helper/ApiResponse';
 import { handleJwtTokensGenerator } from '../config';
+import { BadRequestError, FailureError, NotFoundError } from '../Middleware/narrowDownError';
+import { AuthMessage } from '../Constant/ResponseMessage';
 
 @injectable()
 class AuthService implements IAuthService {
+
     constructor(
         @inject(TYPES.AuthRepository)
         private _authRepository: IAuthRepository
     ) {}
 
-    async registerUser(req: Request, res: Response): Promise<serviceReturnType> {
+    async userRegister(req: Request, res: Response): Promise<serviceReturnType<IUser>> {
         const userData: Partial<IUser> = UserDto.registerUser(req);
         //! validation
 
@@ -26,7 +29,7 @@ class AuthService implements IAuthService {
         const existingUser = await userModel.findOne({ email: userData.email! }).lean<IUser>();
 
         if (existingUser) {
-            throw new Error('User already exists');
+            throw new Error(AuthMessage.EmailExists);
         }
 
         userData.password = await hashPassword(userData.password!);
@@ -53,6 +56,31 @@ class AuthService implements IAuthService {
         handleJwtTokensGenerator(payload, req, res);
 
         return ApiResponse.created(newUser.toObject() as IUser);
+    }
+
+    //token generation :controller while login
+    async userLogin(loginCredential:{email:string,password:string}):Promise<serviceReturnType<IUser>>{
+        //validation: 
+
+        const  {email,password} = loginCredential;
+
+        if(!email.trim() || !password.trim() || password.length<6) {
+            throw new BadRequestError(AuthMessage.InvalidCredentials);
+        } //replace by zod
+
+        const user:IUser|null = await userModel.findOne({email}).lean<IUser>();
+        
+        if(!user || !user.password){
+            throw new NotFoundError(AuthMessage.InvalidUser);
+        }
+
+        const isPasswordVerify = await compareHashPassword(password,user.password);
+
+        if(!isPasswordVerify){
+            throw new FailureError(AuthMessage.InvalidCurrentPassword);
+        }
+
+        return ApiResponse.success<IUser>(user,AuthMessage.UserLoggedIn);
     }
 }
 

@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import { serviceReturnType } from '../../types/serviceReturnType';
+import { IUser } from '../ISchemas/IUserSchema';
 
 export interface IAuthService {
-    registerUser(req: Request, res: Response): Promise<serviceReturnType>;
+    userRegister(req: Request, res: Response): Promise<serviceReturnType<IUser>>;
 
-    // loginUser(email: string, password: string): Promise<{ accessToken: string; refreshToken: string }>;
+    userLogin(loginCredential:{email:string,password:string}):Promise<serviceReturnType<IUser>>
+
     // refreshAccessToken(refreshToken: string): Promise<string>;
     // logoutUser(refreshToken: string): Promise<void>;
 }

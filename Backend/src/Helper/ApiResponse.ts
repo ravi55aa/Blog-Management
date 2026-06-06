@@ -2,7 +2,7 @@ import { StatusCodes } from '../Constant/StatusCode';
 import { IReturnType } from '../types/returnType';
 
 export class ApiResponse {
-    success<T>(data: T, message: string): { status: number; responseBody: IReturnType<T> } {
+    static success<T>(data: T, message: string): { status: number; responseBody: IReturnType<T> } {
         return {
             status: StatusCodes.OK,
             responseBody: {
@@ -17,7 +17,7 @@ export class ApiResponse {
     static unAuthorized(message = 'User unauthorized') {
         return {
             status: StatusCodes.UNAUTHORIZED,
-            resBody: {
+            responseBody: {
                 success: true,
                 data: null,
                 error: null,
@@ -29,7 +29,7 @@ export class ApiResponse {
     static forbidden(message = 'Method forbidden') {
         return {
             status: StatusCodes.FORBIDDEN,
-            resBody: {
+            responseBody: {
                 success: true,
                 data: null,
                 error: null,
@@ -41,7 +41,7 @@ export class ApiResponse {
     static noContent(message = 'No content') {
         return {
             status: StatusCodes.NO_CONTENT,
-            resBody: {
+            responseBody: {
                 success: true,
                 data: null,
                 error: null,
@@ -53,7 +53,7 @@ export class ApiResponse {
     static created<T>(data: T) {
         return {
             status: StatusCodes.CREATED,
-            resBody: {
+            responseBody: {
                 success: true,
                 data,
                 error: null,
@@ -65,7 +65,7 @@ export class ApiResponse {
     static notFound(message = 'Resource not found') {
         return {
             status: StatusCodes.NOT_FOUND,
-            resBody: {
+            responseBody: {
                 success: false,
                 data: null,
                 error: message,
@@ -77,7 +77,7 @@ export class ApiResponse {
     static failure(message = 'Something went wrong') {
         return {
             status: StatusCodes.BAD_REQUEST,
-            resBody: {
+            responseBody: {
                 success: false,
                 data: null,
                 error: message,
@@ -89,7 +89,7 @@ export class ApiResponse {
     static badRequest(message = 'Bad Request') {
         return {
             status: StatusCodes.BAD_REQUEST,
-            resBody: {
+            responseBody: {
                 success: false,
                 data: null,
                 error: 'BAD_REQUEST',
@@ -101,7 +101,7 @@ export class ApiResponse {
     static toManyRequest(message = 'To many request') {
         return {
             status: StatusCodes.RATE_LIMIT,
-            resBody: {
+            responseBody: {
                 success: false,
                 data: null,
                 error: message,
@@ -113,7 +113,7 @@ export class ApiResponse {
     static internalServerError(message = 'Internal server error') {
         return {
             status: StatusCodes.INTERNAL_SERVER_ERROR,
-            resBody: {
+            responseBody: {
                 success: false,
                 data: null,
                 error: message,
@@ -125,7 +125,7 @@ export class ApiResponse {
     static serviceUnavailable(message = 'Service temporarily unavailable') {
         return {
             status: StatusCodes.SERVICE_UNAVAILABLE,
-            resBody: {
+            responseBody: {
                 success: false,
                 data: null,
                 error: message,
@@ -137,7 +137,7 @@ export class ApiResponse {
     static gatewayTimeout(message = 'Gateway timeout') {
         return {
             status: StatusCodes.GATEWAY_TIMEOUT,
-            resBody: {
+            responseBody: {
                 success: false,
                 data: null,
                 error: message,

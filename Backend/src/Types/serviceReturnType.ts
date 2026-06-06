@@ -1,4 +1,6 @@
-export interface serviceReturnType {
+import { IReturnType } from "./returnType";
+
+export interface serviceReturnType<T> {
     status: number;
-    resBody: object;
+    responseBody: IReturnType<T>;
 }
