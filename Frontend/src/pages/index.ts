@@ -7,4 +7,6 @@ export const LandingPage = lazy(() => import('./Auth/Landing'));
 
 //Blog
 export const Dashboard = lazy(() => import('./Blog/Dashboard'));
+export const CreateBlog = lazy(() => import('./Blog/CreateBlog'));
+
 

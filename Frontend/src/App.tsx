@@ -6,7 +6,11 @@ import {
   Login,
   LandingPage,
   
-  Dashboard
+  Dashboard,
+  CreateBlog,
+
+  LoginPageTechnicalTask,
+  ShowResult,
 } from "./pages";
 
 
@@ -23,6 +27,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
 
         <Route path="/blog/dashboard" element={<Dashboard />} />
+        <Route path="/blog/create" element={<CreateBlog />} />
 
       </Routes>
       </Suspense>
