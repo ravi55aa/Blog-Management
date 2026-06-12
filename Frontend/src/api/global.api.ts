@@ -22,11 +22,11 @@ export const handleApi = async <TRequest = unknown, TData = unknown>(
     } catch (err) {
 
         const error = err as AxiosError;
-        const res = error.response;
+        const res = error.response?.data as IResponse<TData>;
 
         return {
             success: false,
-            error: res , //mention the error type, for now its UNKNOWN
+            error: res.error , //mention the error type, for now its UNKNOWN
         };
     }
 };
