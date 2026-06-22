@@ -8,4 +8,6 @@ export interface IDBBlog {
     title:string;
     contentDelta: object;
     contentHtml:string;
+    createdAt?:string;
+    userId?:string;
 }
