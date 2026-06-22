@@ -29,6 +29,7 @@ import { useEffect, useState } from 'react';
 import { BlogService } from '../../api/Services/BlogService';
 import { BlogCard } from '../../components/BlogCard';
 import { AuthService } from '../../api/Services/AuthService';
+import { logoutSWAL } from '../../utils/swal';
 
 
 export default function BlogDashboard() {
@@ -65,6 +66,11 @@ export default function BlogDashboard() {
     };
 
     const handleLogout = async () => {
+
+        const isLogout=await logoutSWAL();
+        
+        if(!isLogout) return isLogout;
+
         try {
 
             await AuthService.logout();
@@ -74,6 +80,7 @@ export default function BlogDashboard() {
             navigate("/login");
 
         } catch (error) {
+
             console.error(error);
         } finally {
             handleCloseMenu();

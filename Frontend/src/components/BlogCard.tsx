@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 
 import { BlogService } from "../api/Services/BlogService";
+import { deleteSWAL } from "../utils/swal";
 
 export const BlogCard = ({ blog,IsMyBlog }: { blog: IDBBlog,IsMyBlog:boolean }) => {
 
@@ -24,7 +25,9 @@ export const BlogCard = ({ blog,IsMyBlog }: { blog: IDBBlog,IsMyBlog:boolean }) 
     const handleDelete = async (blogId:string) => {
         if (!blogId) return;
 
-        // S W A L
+        const isConfirm=await deleteSWAL();
+        
+        if(!isConfirm) return isConfirm;
 
         try {
             

@@ -92,7 +92,7 @@ export default function BlogViewPage() {
                     bgcolor: "#0d9488",
                 }}
                 >
-                R
+                { blog?.userId && blog?.userId?.name[0]?.toUpperCase() || 'R'}
                 </Avatar>
 
                 <div>
@@ -102,7 +102,7 @@ export default function BlogViewPage() {
                         fontWeight: 700,
                     }}
                     >
-                    Ravi
+                    {blog?.userId?.name?.toUpperCase()}
                     </Typography>
 
                 <div className="flex items-center gap-3 text-slate-500 text-sm">

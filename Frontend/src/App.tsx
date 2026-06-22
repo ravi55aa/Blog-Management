@@ -13,12 +13,13 @@ import {
 } from "./pages";
 import ProtectedRoute from './config/protectedRoute';
 import PublicRoute from './config/publicRoute';
+import Loader from "./components/Loader";
 
 
 const App = () => {
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader/>}>
 
       <Routes>
 
@@ -41,11 +42,6 @@ const App = () => {
             element={<Register />}
         />
 
-        <Route
-            path="/blog/:blogId"
-            element={<ViewABlog />}
-        />
-
     </Route>
 
     {/* Protected */}
@@ -65,7 +61,13 @@ const App = () => {
               path="/blog/edit/:blogId"
               element={<CreateBlog />}
           />
-      </Route>
+
+          <Route
+            path="/blog/:blogId"
+            element={<ViewABlog />}
+        />
+        
+      </Route>      
 
       </Routes>
       </Suspense>
