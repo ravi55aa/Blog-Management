@@ -11,15 +11,15 @@ import { StatusCodes } from './Constant/StatusCode';
 import handleErrorsMiddleware from './Middleware/errorHandler';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import { sessionConfig, env,connectDB } from './config';
-import { OauthRouter,authRouter,blogRouter } from './Routes';
+import { sessionConfig, env, connectDB } from './config';
+import { OauthRouter, authRouter, blogRouter } from './Routes';
 
 //application middlewares
 app.use(
     cors({
         origin: 'http://localhost:5173', //import form env
         credentials: true,
-        methods:["GET","POST","PUT","PATCH","DELETE"]
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     })
 );
 
@@ -30,23 +30,18 @@ app.use(express.urlencoded({ extended: true })); //read form data
 
 //global router
 app.use((req: Request, res: Response, next: NextFunction) => {
-    logger.info({ method: req.method, path: req.path },
-        "Health Check"
-    );
+    logger.info({ method: req.method, path: req.path }, 'Health Check');
     console.log(process.env.NODE_ENV);
     next();
 });
 
-
 //DB
 connectDB();
 
-
 /*ROUTES*/
-app.use("/google",OauthRouter);
-app.use("/auth",authRouter);
-app.use("/blog",blogRouter);
-
+app.use('/google', OauthRouter);
+app.use('/auth', authRouter);
+app.use('/blog', blogRouter);
 
 /*health check*/
 app.get('/health', (req, res) => {
@@ -61,6 +56,7 @@ app.get('/health', (req, res) => {
 //error Handler
 app.use(handleErrorsMiddleware);
 
-app.listen(env.PORT ,() => { //import origin from env
+app.listen(env.PORT, () => {
+    //import origin from env
     console.log(`http://localhost:${env.PORT}`);
 });

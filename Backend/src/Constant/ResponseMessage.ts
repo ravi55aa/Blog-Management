@@ -28,18 +28,17 @@ export enum AuthMessage {
     TokenRefreshed = 'Token refreshed',
 }
 
-
 export enum BlogMessage {
-    BlogCreated = "Blog created successfully",
-    BlogNotCreated = "Blog is not created",
-    BlogUpdated = "Blog updated successfully",
-    BlogNotUpdated = "Blog is not updated",
-    BlogDeleted = "Blog deleted successfully",
-    BlogNotDeleted = "Blog is not deleted",
-    BlogNotFound = "Blog not found",
-    BlogsFetched = "Blogs fetched successfully",
-    BlogFetched = "Blog fetched successfully",
-    InvalidBlogId = "Invalid blog id",
-    InvalidBlogData = "Invalid blog data",
-    UnauthorizedBlogAccess = "You are not authorized to access this blog"
+    BlogCreated = 'Blog created successfully',
+    BlogNotCreated = 'Blog is not created',
+    BlogUpdated = 'Blog updated successfully',
+    BlogNotUpdated = 'Blog is not updated',
+    BlogDeleted = 'Blog deleted successfully',
+    BlogNotDeleted = 'Blog is not deleted',
+    BlogNotFound = 'Blog not found',
+    BlogsFetched = 'Blogs fetched successfully',
+    BlogFetched = 'Blog fetched successfully',
+    InvalidBlogId = 'Invalid blog id',
+    InvalidBlogData = 'Invalid blog data',
+    UnauthorizedBlogAccess = 'You are not authorized to access this blog',
 }

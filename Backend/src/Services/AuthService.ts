@@ -15,7 +15,6 @@ import { AuthMessage } from '../Constant/ResponseMessage';
 
 @injectable()
 class AuthService implements IAuthService {
-
     constructor(
         @inject(TYPES.AuthRepository)
         private _authRepository: IAuthRepository
@@ -59,28 +58,31 @@ class AuthService implements IAuthService {
     }
 
     //token generation :controller while login
-    async userLogin(loginCredential:{email:string,password:string}):Promise<serviceReturnType<IUser>>{
-        //validation: 
+    async userLogin(loginCredential: {
+        email: string;
+        password: string;
+    }): Promise<serviceReturnType<IUser>> {
+        //validation:
 
-        const {email,password} = loginCredential;
-        
-        if(!email.trim() || !password.trim() || password.length<6) {
+        const { email, password } = loginCredential;
+
+        if (!email.trim() || !password.trim() || password.length < 6) {
             throw new BadRequestError(AuthMessage.InvalidCredentials);
         } //replace by zod
-        
-        const user:IUser|null = await userModel.findOne({email}).lean<IUser>();
-        
-        if(!user || !user.password){
+
+        const user: IUser | null = await userModel.findOne({ email }).lean<IUser>();
+
+        if (!user || !user.password) {
             throw new NotFoundError(AuthMessage.not_Found);
         }
-        
-        const isPasswordVerify = await compareHashPassword(password,user.password);
-        
-        if(!isPasswordVerify){
+
+        const isPasswordVerify = await compareHashPassword(password, user.password);
+
+        if (!isPasswordVerify) {
             throw new FailureError(AuthMessage.InvalidCurrentPassword);
         }
 
-        return ApiResponse.success<IUser>(user,AuthMessage.UserLoggedIn);
+        return ApiResponse.success<IUser>(user, AuthMessage.UserLoggedIn);
     }
 }
 

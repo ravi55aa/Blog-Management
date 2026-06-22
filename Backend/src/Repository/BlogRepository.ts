@@ -1,106 +1,111 @@
 import { injectable } from 'tsyringe';
-//import { Types } from 'mongoose';
 
-import { IBlog } from '../Models/blogModel'; 
-import blogModel from '../Models/blogModel'; 
+import blogModel, { IBlog } from '../Models/blogModel';
+import { IBlogRepository } from '../Interface/IRepository/IBlogRepository';
 
-import { IBlogRepository } from '../Interface/IRepository/IBlogRepository'; 
-
-import { errorLogger, logger } from '../Utils/logger';
+import { logger, errorLogger } from '../Utils/logger';
 
 @injectable()
 export class BlogRepository implements IBlogRepository {
-
-    async createBlog(blogData: Partial<IBlog>): Promise<IBlog|null> {
-        try{
+    async createBlog(blogData: Partial<IBlog>): Promise<IBlog | null> {
+        try {
             logger.info('[BlogRepository] Creating blog');
 
             const blog = await blogModel.create(blogData);
 
-            if(!blog){
-                errorLogger.error(`[BlogRepository] Blog create error: ${blog}`);
-                return blog;
-            }
-
             logger.info(`[BlogRepository] Blog created: ${blog.title}`);
 
             return blog;
-            
-        } catch (error:unknown){
-            logger.info(`[BlogRepository] Blog created: ${error}`);
+        } catch (error) {
+            errorLogger.error(`[BlogRepository] Create blog error: ${error}`);
+
             return null;
         }
     }
 
-    // async findById(blogId: string): Promise<IBlog | null> {
-    //     logger.info(`[BlogRepository] Fetching blog ${blogId}`);
+    async findById(blogId: string): Promise<IBlog | null> {
+        try {
+            logger.info(`[BlogRepository] Finding blog by id: ${blogId}`);
 
-    //     return await blogModel
-    //         .findOne({
-    //             _id: blogId,
-    //             isDelete: false,
-    //         })
-    //         .lean<IBlog>();
-    // }
+            return await blogModel.findOne({
+                _id: blogId,
+                isDelete: false,
+            });
+        } catch (error) {
+            errorLogger.error(`[BlogRepository] Find blog error: ${error}`);
 
-    // async findByUserId(userId: Types.ObjectId): Promise<IBlog[]> {
-    //     logger.info(`[BlogRepository] Fetching blogs of user ${userId}`);
+            return null;
+        }
+    }
 
-    //     return await blogModel
-    //         .find({
-    //             userId,
-    //             isDelete: false,
-    //         })
-    //         .sort({
-    //             createdAt: -1,
-    //         })
-    //         .lean<IBlog[]>();
-    // }
+    async findAll(): Promise<IBlog[]> {
+        try {
+            logger.info('[BlogRepository] Fetching all blogs');
 
-    // async updateBlog(blogId: string, updateData: Partial<IBlog>): Promise<IBlog | null> {
-    //     logger.info(`[BlogRepository] Updating blog ${blogId}`);
+            return await blogModel
+                .find({
+                    isDelete: false,
+                })
+                .sort({
+                    createdAt: -1,
+                });
+        } catch (error) {
+            errorLogger.error(`[BlogRepository] Find all blogs error: ${error}`);
 
-    //     const updatedBlog = await blogModel
-    //         .findOneAndUpdate(
-    //             {
-    //                 _id: blogId,
-    //                 isDelete: false,
-    //             },
-    //             {
-    //                 $set: updateData,
-    //             },
-    //             {
-    //                 new: true,
-    //             }
-    //         )
-    //         .lean<IBlog>();
+            return [];
+        }
+    }
 
-    //     logger.info(`[BlogRepository] Blog updated ${blogId}`);
+    async findMany(filter: Partial<IBlog>): Promise<IBlog[]> {
+        try {
+            logger.info('[BlogRepository] Finding blogs');
 
-    //     return updatedBlog;
-    // }
+            return await blogModel.find(filter).sort({
+                createdAt: -1,
+            });
+        } catch (error) {
+            errorLogger.error(`[BlogRepository] Find many blogs error: ${error}`);
 
-    // async softDeleteBlog(blogId: string): Promise<IBlog | null> {
-    //     logger.info(`[BlogRepository] Soft deleting blog ${blogId}`);
+            return [];
+        }
+    }
 
-    //     const deletedBlog = await blogModel
-    //         .findOneAndUpdate(
-    //             {
-    //                 _id: blogId,
-    //             },
-    //             {
-    //                 $set: {
-    //                     isDelete: true,
-    //                 },
-    //             },
-    //             {
-    //                 new: true,
-    //             }
-    //         )
-    //         .lean<IBlog>();
+    async updateBlog(blogId: string, payload: Partial<IBlog>): Promise<IBlog | null> {
+        try {
+            logger.info(`[BlogRepository] Updating blog: ${blogId}`);
 
-    //     logger.info(`[BlogRepository] Blog soft deleted ${blogId}`);
+            const updatedBlog = await blogModel.findByIdAndUpdate(blogId, payload, {
+                new: true,
+                runValidators: true,
+            });
 
-    //     return deletedBlog;
-    // }
+            return updatedBlog;
+        } catch (error) {
+            errorLogger.error(`[BlogRepository] Update blog error: ${error}`);
+
+            return null;
+        }
+    }
+
+    async deleteBlog(blogId: string): Promise<boolean> {
+        try {
+            logger.info(`[BlogRepository] Soft deleting blog: ${blogId}`);
+
+            const deletedBlog = await blogModel.findByIdAndUpdate(
+                blogId,
+                {
+                    isDelete: true,
+                },
+                {
+                    new: true,
+                }
+            );
+
+            return !!deletedBlog;
+        } catch (error) {
+            errorLogger.error(`[BlogRepository] Delete blog error: ${error}`);
+
+            return false;
+        }
+    }
 }

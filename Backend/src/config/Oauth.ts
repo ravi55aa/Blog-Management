@@ -16,7 +16,7 @@ const GOOGLE_OAUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const CLIENT_ID = env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = env.GOOGLE_CLIENT_SECRET;
 
-console.log()
+console.log();
 const REDIRECT_URI = 'http://localhost:4000/google/callback';
 
 export const handleOAuth = (req: Request, res: Response) => {
@@ -35,7 +35,6 @@ export const handleAuthCallback = async (req: Request, res: Response) => {
     const { code } = req.query;
 
     try {
-
         const tokenResponse: AxiosResponse<GoogleTokenResponse> = await axios.post(
             'https://oauth2.googleapis.com/token',
 
@@ -45,7 +44,6 @@ export const handleAuthCallback = async (req: Request, res: Response) => {
                 grant_type: 'authorization_code',
                 redirect_uri: REDIRECT_URI,
                 code: String(code),
-
             }),
             {
                 headers: {
@@ -71,7 +69,7 @@ export const handleAuthCallback = async (req: Request, res: Response) => {
 
         //req.session.user = user;
         let userInDB = await userModel.findOne({ googleId: user.googleId }).lean<IUser>();
-        
+
         if (!userInDB) {
             const newGUser: Partial<IUser> = {
                 name: user.name,
@@ -89,35 +87,30 @@ export const handleAuthCallback = async (req: Request, res: Response) => {
             Move this part, 
             
         */
-        const payload:IJwtPayload = {
-            email:userInDB?.email,
-            id:String(userInDB?._id),
-            name:userInDB?.name
-        }
+        const payload: IJwtPayload = {
+            email: userInDB?.email,
+            id: String(userInDB?._id),
+            name: userInDB?.name,
+        };
 
-        handleJwtTokensGenerator(payload,req,res);
+        handleJwtTokensGenerator(payload, req, res);
 
         //--END TOKEN GENERATION
 
         res.redirect(`${env.FRONTEND_URL}/blog/dashboard`);
-
     } catch (error: unknown) {
-
         if (axios.isAxiosError(error)) {
-
             logger.error(
                 `OAuth callback Axios error: ${JSON.stringify(error.response?.data)} - ${error.message}`
             );
-
         } else if (error instanceof Error) {
-
             logger.error(`OAuth callback error: ${error.message}`);
-
         } else {
-
             logger.error('Unknown OAuth callback error');
         }
 
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Authentication failed. Please try again.');
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(
+            'Authentication failed. Please try again.'
+        );
     }
 };

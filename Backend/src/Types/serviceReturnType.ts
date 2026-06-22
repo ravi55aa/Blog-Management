@@ -1,4 +1,4 @@
-import { IReturnType } from "./returnType";
+import { IReturnType } from './returnType';
 
 export interface serviceReturnType<T> {
     status: number;

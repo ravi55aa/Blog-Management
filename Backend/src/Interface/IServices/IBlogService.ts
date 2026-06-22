@@ -1,29 +1,17 @@
-import { IBlog } from "../../Models/blogModel";
-import { serviceReturnType } from "../../types/serviceReturnType"; 
-import {Request} from "express";
-
-//import {IUpdateBlogDTO } from "../Other/IBlog" 
+import { Request } from 'express';
+import { IBlog } from '../../Models/blogModel';
+import { serviceReturnType } from '../../types/serviceReturnType';
 
 export interface IBlogService {
+    createBlog(req: Request): Promise<serviceReturnType<IBlog>>;
 
-    createBlog(
-        req:Request
-    ): Promise<serviceReturnType<Partial<IBlog>>>;
+    updateBlog(blogId: string, req: Request): Promise<serviceReturnType<IBlog>>;
 
-    // updateBlog(
-    //     blogId: string,
-    //     blogData: IUpdateBlogDTO
-    // ): Promise<serviceReturnType<Partial<IBlog>>>;
+    deleteBlog(blogId: string): Promise<serviceReturnType<null>>;
 
-    // deleteBlog(
-    //     blogId: string
-    // ): Promise<serviceReturnType<null>>;
+    getABlog(blogId: string): Promise<serviceReturnType<IBlog>>;
 
-    // getBlogById(
-    //     blogId: string
-    // ): Promise<serviceReturnType<Partial<IBlog>>>;
+    getAllBlogs(): Promise<serviceReturnType<IBlog[]>>;
 
-    // getBlogsByUser(
-    //     userId: string
-    // ): Promise<serviceReturnType<IBlog[]>>;
+    getMyBlogs(req: Request): Promise<serviceReturnType<IBlog[]>>;
 }

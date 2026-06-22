@@ -25,20 +25,22 @@ class AuthController {
 
     public async loginUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const {email,password}=req.body as {email:string,password:string};
+            const { email, password } = req.body as { email: string; password: string };
 
-            const { status, responseBody } = await this._authService.userLogin({email,password});
+            const { status, responseBody } = await this._authService.userLogin({ email, password });
 
-            
-            const user:IUser = responseBody.data;
-            
-            const payload:IJwtPayload={id:String(user._id),email:user.email,name:user.name};
-            
-            handleJwtTokensGenerator(payload,req,res);
+            const user: IUser = responseBody.data;
+
+            const payload: IJwtPayload = {
+                id: String(user._id),
+                email: user.email,
+                name: user.name,
+            };
+
+            handleJwtTokensGenerator(payload, req, res);
             //responseBody.data={} don't send credentials to frontend;
-            
-            res.status(status).json(responseBody);
 
+            res.status(status).json(responseBody);
         } catch (err) {
             next(err);
         }

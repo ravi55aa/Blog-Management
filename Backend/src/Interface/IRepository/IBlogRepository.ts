@@ -1,26 +1,15 @@
-//import { Types } from "mongoose";
-import { IBlog } from "../../Models/blogModel"; 
+import { IBlog } from '../../Models/blogModel';
 
 export interface IBlogRepository {
+    createBlog(blogData: Partial<IBlog>): Promise<IBlog | null>;
 
-    createBlog(
-        blogData: Partial<IBlog>
-    ): Promise<IBlog|null>;
+    findById(blogId: string): Promise<IBlog | null>;
 
-    // findById(
-    //     blogId: string
-    // ): Promise<IBlog | null>;
+    findAll(): Promise<IBlog[]>;
 
-    // findByUserId(
-    //     userId: Types.ObjectId
-    // ): Promise<IBlog[]>;
+    findMany(filter: Partial<IBlog>): Promise<IBlog[]>;
 
-    // updateBlog(
-    //     blogId: string,
-    //     updateData: Partial<IBlog>
-    // ): Promise<IBlog | null>;
+    updateBlog(blogId: string, payload: Partial<IBlog>): Promise<IBlog | null>;
 
-    // softDeleteBlog(
-    //     blogId: string
-    // ): Promise<IBlog | null>;
+    deleteBlog(blogId: string): Promise<boolean>;
 }

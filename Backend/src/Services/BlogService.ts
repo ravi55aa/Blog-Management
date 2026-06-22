@@ -1,5 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-import {Request} from "express";
+import { Request } from 'express';
 import TYPES from '../config/DI/types';
 import { serviceReturnType } from '../types/serviceReturnType';
 import { ApiResponse } from '../Helper/ApiResponse';
@@ -9,8 +9,8 @@ import { IBlogService } from '../Interface/IServices/IBlogService';
 import { IBlog } from '../Models/blogModel';
 import { IBlogRepository } from '../Interface/IRepository/IBlogRepository';
 import BlogDTO from '../DTO/blogDTO';
-import { errorLogger } from '../Utils/logger';
-import {  Types } from 'mongoose';
+
+import { Types } from 'mongoose';
 import { handleDecodeToken } from '../config/jwt';
 
 @injectable()
@@ -21,39 +21,86 @@ class BlogService implements IBlogService {
     ) {}
 
     async createBlog(req: Request): Promise<serviceReturnType<IBlog>> {
+        const blogPayload: Partial<IBlog> = BlogDTO.createBlog(req.body);
 
-        const blogPayload:Partial<IBlog>=BlogDTO.createBlog(req.body); //DTO CALL
-
-
-        if ( !blogPayload?.title || !blogPayload?.title.trim() || !blogPayload?.contentHtml || !blogPayload?.contentHtml.trim()) {
+        if (!blogPayload.title?.trim() || !blogPayload.contentHtml?.trim()) {
             throw new BadRequestError(BlogMessage.InvalidBlogData);
         }
 
-        const existingBlog = await this._blogRepository.createBlog(blogPayload);
-        
-        if (existingBlog) {
-            throw new FailureError(BlogMessage.BlogFetched);
-        }
-        
-        // if(!req.user?.userId){
-        //     console.log("@blogService req.user",req.user);
-        //     throw new UnauthorizedError(AuthMessage.InvalidUser);
-        // }
+        const decodedValue = handleDecodeToken(req);
 
-        const decodedValue=handleDecodeToken(req);
-        
-        if(!blogPayload.userId){
-            blogPayload.userId = new Types.ObjectId(decodedValue.id);
-        };
+        blogPayload.userId = new Types.ObjectId(decodedValue.id);
 
         const blog = await this._blogRepository.createBlog(blogPayload);
 
-        if(!blog){
-            errorLogger.error(blog,BlogMessage.BlogNotCreated);
+        if (!blog) {
             throw new FailureError(BlogMessage.BlogNotCreated);
         }
 
-        return ApiResponse.success<IBlog>(blog, BlogMessage.BlogCreated);
+        return ApiResponse.success(blog, BlogMessage.BlogCreated);
+    }
+
+    async updateBlog(blogId: string, req: Request): Promise<serviceReturnType<IBlog>> {
+        const payload: Partial<IBlog> = BlogDTO.createBlog(req.body);
+
+        if (!payload.title?.trim() || !payload.contentHtml?.trim()) {
+            throw new BadRequestError(BlogMessage.InvalidBlogData);
+        }
+
+        const blog = await this._blogRepository.findById(blogId);
+
+        if (!blog) {
+            throw new FailureError(BlogMessage.BlogNotFound);
+        }
+
+        const updatedBlog = await this._blogRepository.updateBlog(blogId, payload);
+
+        if (!updatedBlog) {
+            throw new FailureError(BlogMessage.BlogNotUpdated);
+        }
+
+        return ApiResponse.success(updatedBlog, BlogMessage.BlogUpdated);
+    }
+
+    async getABlog(blogId: string): Promise<serviceReturnType<IBlog>> {
+        const blog = await this._blogRepository.findById(blogId);
+
+        if (!blog) {
+            throw new FailureError(BlogMessage.BlogNotFound);
+        }
+
+        return ApiResponse.success(blog, BlogMessage.BlogFetched);
+    }
+
+    async getAllBlogs(): Promise<serviceReturnType<IBlog[]>> {
+        const blogs = await this._blogRepository.findAll();
+
+        return ApiResponse.success(blogs, BlogMessage.BlogFetched);
+    }
+
+    async getMyBlogs(req: Request): Promise<serviceReturnType<IBlog[]>> {
+        const decodedValue = handleDecodeToken(req);
+
+        const blogs = await this._blogRepository.findMany({
+            userId: new Types.ObjectId(decodedValue.id),
+            isDelete: false,
+        });
+
+        return ApiResponse.success(blogs, BlogMessage.BlogFetched);
+    }
+
+    async deleteBlog(blogId: string): Promise<serviceReturnType<null>> {
+        const blog = await this._blogRepository.findById(blogId);
+
+        if (!blog) {
+            throw new FailureError(BlogMessage.BlogNotFound);
+        }
+
+        await this._blogRepository.updateBlog(blogId, {
+            isDelete: true,
+        });
+
+        return ApiResponse.success(null, BlogMessage.BlogDeleted);
     }
 }
 
