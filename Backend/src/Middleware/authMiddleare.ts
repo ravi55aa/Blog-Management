@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { NotFoundError } from './narrowDownError';
 import { logger } from '../Utils/logger';
 import { StatusCodes } from '../Constant/StatusCode';
 import { env, handleCreateNewAccessToken, handleVerifyToken } from '../config';

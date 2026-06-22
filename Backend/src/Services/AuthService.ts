@@ -74,9 +74,7 @@ class AuthService implements IAuthService {
             throw new NotFoundError(AuthMessage.not_Found);
         }
         
-        
         const isPasswordVerify = await compareHashPassword(password,user.password);
-        
         
         if(!isPasswordVerify){
             throw new FailureError(AuthMessage.InvalidCurrentPassword);

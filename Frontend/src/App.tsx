@@ -9,8 +9,8 @@ import {
   Dashboard,
   CreateBlog,
 
-  LoginPageTechnicalTask,
-  ShowResult,
+  //LoginPageTechnicalTask,
+  //ShowResult,
 } from "./pages";
 
 

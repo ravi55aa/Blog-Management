@@ -34,7 +34,7 @@ const SignIn = () => {
 
         e.preventDefault();
 
-        if(!loginData.email?.trim()){
+        if(!loginData.email?.trim()){ //throw an error here
             return false;
         }
 

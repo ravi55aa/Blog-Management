@@ -18,7 +18,9 @@ const generateRefreshToken = (payload: IJwtPayload): string => {
 
 //handle token generation and sending response
 export const handleJwtTokensGenerator = (payload: IJwtPayload, req: Request, res: Response) => {
+
     const token = generateAccessToken(payload);
+
     const refreshToken = generateRefreshToken(payload);
 
     //store in req.cookie
@@ -30,7 +32,8 @@ export const handleJwtTokensGenerator = (payload: IJwtPayload, req: Request, res
         secure: false,
     });
 
-    //store in session.refreshToken
+    //store in session.refreshToken  
+    req.user={userId:payload.id,...payload};
     req.session.refreshToken = refreshToken;
 
     return { token, refreshToken };
@@ -60,6 +63,25 @@ export const handleCreateNewAccessToken = (refreshToken: string) => {
         //iam doing this at the authMiddleware
 
         return newAccessToken;
+
+    } catch (error) {
+        //issue in refresh token is invalid or expired
+        errorLogger.error(error);
+        throw new Error('Session is done kindly re-login');
+    }
+};
+
+export const handleDecodeToken = (req:Request) => {
+    try {
+        const token=req.cookies.token;
+        
+        const decoded = handleVerifyToken(
+            token,
+            env.JWT_SECRET as string
+        ) as IJwtPayload;
+
+        return decoded;
+
     } catch (error) {
         //issue in refresh token is invalid or expired
         errorLogger.error(error);

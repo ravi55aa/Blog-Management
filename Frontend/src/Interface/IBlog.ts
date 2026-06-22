@@ -3,3 +3,9 @@ export interface IBlog {
     title: string;
     content: string;
 }
+export interface IDBBlog {
+    _id?:string;
+    title:string;
+    contentDelta: object;
+    contentHtml:string;
+}

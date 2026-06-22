@@ -8,15 +8,16 @@ import { IBlogService } from '../Interface/IServices/IBlogService';
 class BlogController {
 
     constructor(
-        @inject(TYPES.AuthService)
+        @inject(TYPES.BlogService)
         private _blogService: IBlogService
     ) {}
 
-    public async CreateBlog(req: Request, res: Response, next: NextFunction) {
+    public async createBlog(req: Request, res: Response, next: NextFunction) {
         try {
             const { status, responseBody } = await this._blogService.createBlog(req);
 
             res.status(status).json(responseBody);
+
         } catch (err) {
             next(err);
         }

@@ -1,4 +1,5 @@
 /// <reference path="./types/express-session.d.ts" />
+/// <reference path="./types/express.d.ts" />
 
 import 'reflect-metadata';
 import './config/DI/register';

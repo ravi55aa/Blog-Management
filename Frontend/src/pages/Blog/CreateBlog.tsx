@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { blogSchema } from "../../utils/Validation/blogValidation";
 import type { IBlog } from "../../Interface/IBlog";
 import { BlogService } from "../../api/Services/BlogService";
+import { useParams } from "react-router-dom";
 
 
 export default function CreateBlog() {
@@ -21,6 +22,40 @@ export default function CreateBlog() {
 
         const [errors, setErrors] =
         useState<Record<string, string>>({});
+
+
+        //BLOG id for edit the blog
+        const {blogId}=useParams();
+        
+        useEffect(() => {
+            if (!blogId) return;
+
+            const fetchBlogData = async () => {
+                try {
+                    const res = await BlogService.getABlog(blogId);
+
+                    if (!res.success || !res.data) {
+                        return;
+                    }
+
+                    const payload = res.data;
+
+                    setBlogData({
+                        title: payload.title,
+                        content: payload.contentHtml,
+                    });
+
+                    setHtmlContent(payload.contentHtml);
+
+                    setDeltaContent(payload.contentDelta);
+
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+
+            fetchBlogData();
+        }, [blogId]);
 
     const modules = {
         toolbar: [
@@ -102,8 +137,8 @@ export default function CreateBlog() {
             .trim();
 
         blogSchema.parse({
-        title: blogData.title,
-        content: plainText,
+            title: blogData.title,
+            content: plainText,
         });
 
         setErrors({});

@@ -1,4 +1,4 @@
-import mongoose,{Document,Types,Schema} from "mongoose";
+import mongoose,{Document,Schema, Types} from "mongoose";
 type CONTENT_DELTA_TYPE={"ops":unknown[]};
 
 export interface IBlog extends Document{
@@ -8,15 +8,15 @@ export interface IBlog extends Document{
     contentDelta:CONTENT_DELTA_TYPE,
 
     isDelete:boolean,
-    userId:Schema.Types.ObjectId,                                                       
+    userId:Types.ObjectId,                                                       
 
 }
 
 const blogSchema = new Schema<IBlog>({
     
-    userId:{ type:Types.ObjectId, ref:"User", required:true },
+    userId:{ type:mongoose.Schema.Types.ObjectId, ref:"User", required:true },
     
-    title:{title:String, required:true},
+    title:{type:String, required:true},
     
     contentHtml:{type:String, required:true},
     
