@@ -5,6 +5,7 @@ import { Response, Request, NextFunction } from 'express';
 import { IUser } from '../Interface/ISchemas/IUserSchema';
 import { IJwtPayload } from '../Interface/Other/IPayloadJwt';
 import { handleJwtTokensGenerator } from '../config';
+import { StatusCodes } from '../Constant/StatusCode';
 
 @injectable()
 class AuthController {
@@ -44,6 +45,18 @@ class AuthController {
         } catch (err) {
             next(err);
         }
+    }
+
+    public async currentUser(
+        req: Request,
+        res: Response
+    ) {
+
+        return res.status(StatusCodes.OK).json({
+            success: true,
+            user: req.user,
+        });
+
     }
 }
 

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { authController } from '../config/DI/resolve';
 import { Request, Response, NextFunction } from 'express';
+import { authMiddleware } from '../Middleware/authMiddleare';
 
 const router = Router();
 
@@ -10,6 +11,13 @@ router.post('/login', (req: Request, res: Response, next: NextFunction) =>
 
 router.post('/register', (req: Request, res: Response, next: NextFunction) =>
     authController.registerUser(req, res, next)
+);
+
+router.get(
+    "/me",
+    authMiddleware,
+    (req: Request, res: Response) =>
+    authController.currentUser(req, res)
 );
 
 export default router;

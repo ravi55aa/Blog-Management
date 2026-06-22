@@ -11,4 +11,8 @@ export class AuthService extends BaseService{
         return this.post("/auth/login",userPayload ,{});
     }
 
+    static getCurrentUser() {
+        return this.get("/auth/me");
+    }
+
 }
