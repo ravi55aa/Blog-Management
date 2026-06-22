@@ -11,7 +11,7 @@ import handleErrorsMiddleware from './Middleware/errorHandler';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { sessionConfig, env,connectDB } from './config';
-import { OauthRouter,authRouter } from './Routes';
+import { OauthRouter,authRouter,blogRouter } from './Routes';
 
 //application middlewares
 app.use(
@@ -44,6 +44,7 @@ connectDB();
 /*ROUTES*/
 app.use("/google",OauthRouter);
 app.use("/auth",authRouter);
+app.use("/blog",blogRouter);
 
 
 /*health check*/
