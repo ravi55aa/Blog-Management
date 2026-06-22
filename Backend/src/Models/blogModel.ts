@@ -1,11 +1,15 @@
 import mongoose,{Document,Types,Schema} from "mongoose";
+type CONTENT_DELTA_TYPE={"ops":unknown[]};
 
-interface IBlog extends Document{
-    userId:Schema.Types.ObjectId,
+export interface IBlog extends Document{
+    
     title:string,
-    description:string,
+    contentHtml:string,
+    contentDelta:CONTENT_DELTA_TYPE,
+
     isDelete:boolean,
-    images:string[]|null
+    userId:Schema.Types.ObjectId,                                                       
+
 }
 
 const blogSchema = new Schema<IBlog>({
@@ -14,9 +18,11 @@ const blogSchema = new Schema<IBlog>({
     
     title:{title:String, required:true},
     
-    description:{type:String, required:true},
+    contentHtml:{type:String, required:true},
     
-    images:{type:[String],default:[]}
+    contentDelta:{type:Object,default:{}},
+
+    isDelete : {type:Boolean, default:false},
 
 },{timestamps:true});
 
