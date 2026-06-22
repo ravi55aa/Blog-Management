@@ -11,7 +11,7 @@ export class BlogService extends BaseService {
     }
 
     static getABlog(blogId: string) {
-        return this.get<IDBBlog>(`/blog/get/${blogId}`);
+        return this.get<IDBBlog>(`/blog/${blogId}`);
     }
 
     static updateBlog(

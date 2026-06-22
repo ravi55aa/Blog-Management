@@ -9,8 +9,7 @@ import {
   Dashboard,
   CreateBlog,
 
-  //LoginPageTechnicalTask,
-  //ShowResult,
+  ViewABlog,
 } from "./pages";
 
 
@@ -27,8 +26,12 @@ const App = () => {
         <Route path="/login" element={<Login />} />
 
         <Route path="/blog/dashboard" element={<Dashboard />} />
+        
         <Route path="/blog/create" element={<CreateBlog />} />
+
         <Route path="/blog/edit/:blogId" element={<CreateBlog />} />
+
+        <Route path="/blog/:blogId" element={<ViewABlog />} />
 
       </Routes>
       </Suspense>

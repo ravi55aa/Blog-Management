@@ -15,27 +15,39 @@ import {
 } from "lucide-react";  
 
 import { useAppNavigate } from "../../hooks/useNavigate";
+import type { IDBBlog } from "../../Interface/IBlog";
+import { useEffect, useState } from "react";
+import { BlogService } from "../../api/Services/BlogService";
+import { useParams } from "react-router-dom";
 
-interface Blog {
-    _id: string;
-    title: string;
-    contentHtml: string;
-    createdAt: string;
-    updatedAt: string;
-}
 
-interface Props {
-    blog: Blog;
-}
-
-export default function BlogViewPage({ blog }: Props) {
+export default function BlogViewPage() {
+    
     const navigate = useAppNavigate();
+    
+    const {blogId} = useParams();
 
-    // const { id } = useParams();
+    const [blog,setBlog]=useState<IDBBlog | null>();
 
-    // useEffect(() => {
-    //     getBlogById(id);
-    // }, [id]);
+    useEffect(()=>{
+
+        if(!blogId){
+            return;
+        }
+
+        const fetchBlog = async () => {
+            const res = await BlogService.getABlog(blogId);
+
+            if(!res.success){
+                return res.success;
+            }
+            
+            setBlog(res?.data || null);
+        };
+
+        fetchBlog()
+
+    },[blogId]);
 
     return (
         <div className="min-h-screen bg-slate-50">
@@ -44,7 +56,7 @@ export default function BlogViewPage({ blog }: Props) {
             {/* Back Button */}
             <Button
             startIcon={<ArrowLeft size={18} />}
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/blog/dashboard")}
             sx={{
                 textTransform: "none",
                 mb: 4,
@@ -70,7 +82,7 @@ export default function BlogViewPage({ blog }: Props) {
                 mb: 3,
                 }}
             >
-                {blog.title}
+                {blog?.title}
             </Typography>
 
             {/* Author */}
@@ -97,8 +109,8 @@ export default function BlogViewPage({ blog }: Props) {
 
                     <div className="flex items-center gap-1">
                     <Calendar size={14} />
-                    {new Date(
-                        blog.createdAt
+                    { blog?.createdAt && new Date(
+                        blog?.createdAt
                     ).toLocaleDateString()}
                     </div>
 
@@ -143,7 +155,7 @@ export default function BlogViewPage({ blog }: Props) {
                 },
                 }}
                 dangerouslySetInnerHTML={{
-                __html: blog.contentHtml,
+                __html:blog && blog.contentHtml,
                 }}
             />
 
@@ -160,7 +172,7 @@ export default function BlogViewPage({ blog }: Props) {
                 <Button
                 variant="contained"
                 onClick={() =>
-                    navigate(`/blogs/edit/${blog._id}`)
+                    navigate(`/blog/edit/${blog?._id}`)
                 }
                 sx={{
                     bgcolor: "#0d9488",

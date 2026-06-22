@@ -117,7 +117,7 @@ export default function BlogDashboard() {
                 color: '#0f172a',
                 }}
             >
-                Welcome Back 👋
+                Welcome Back 
             </Typography>
 
             <Typography

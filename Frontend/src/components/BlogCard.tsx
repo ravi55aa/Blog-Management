@@ -71,7 +71,7 @@ export const BlogCard = ({ blog,IsMyBlog }: { blog: IDBBlog,IsMyBlog:boolean }) 
                 <Button
                 size="small"
                 onClick={() =>
-                    navigate(`/blogs/${blog._id}`)
+                    navigate(`/blog/${blog._id}`)
                 }
                 >
                 View
