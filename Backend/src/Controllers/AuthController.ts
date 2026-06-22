@@ -6,6 +6,7 @@ import { IUser } from '../Interface/ISchemas/IUserSchema';
 import { IJwtPayload } from '../Interface/Other/IPayloadJwt';
 import { handleJwtTokensGenerator } from '../config';
 import { StatusCodes } from '../Constant/StatusCode';
+import { AuthMessage } from '../Constant/ResponseMessage';
 
 @injectable()
 class AuthController {
@@ -56,7 +57,21 @@ class AuthController {
             success: true,
             user: req.user,
         });
+    }
 
+    public async logout(
+        req: Request,
+        res: Response
+        ) {
+
+        res.clearCookie("token");
+
+        req.session.destroy(() => {});
+
+        return res.status(StatusCodes.OK).json({
+            success: true,
+            message: AuthMessage.UserLoggedOut,
+        });
     }
 }
 

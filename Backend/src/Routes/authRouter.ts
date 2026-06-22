@@ -20,4 +20,10 @@ router.get(
     authController.currentUser(req, res)
 );
 
+router.post(
+    "/logout",
+    (req: Request, res: Response) =>
+    authController.logout(req, res)
+);
+
 export default router;

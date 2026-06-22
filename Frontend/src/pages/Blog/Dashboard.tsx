@@ -7,6 +7,10 @@ import {
     Typography,
     Avatar,
     InputAdornment, 
+    Menu,
+    MenuItem,
+    Divider,
+    ListItemIcon,
 } from '@mui/material';
 
 import {
@@ -15,6 +19,8 @@ import {
     Search,
     FileText,
     Pencil,
+    LogOut,
+    User,
 } from 'lucide-react';
 
 import { useAppNavigate } from '../../hooks/useNavigate';
@@ -22,6 +28,7 @@ import type { IDBBlog } from '../../Interface/IBlog';
 import { useEffect, useState } from 'react';
 import { BlogService } from '../../api/Services/BlogService';
 import { BlogCard } from '../../components/BlogCard';
+import { AuthService } from '../../api/Services/AuthService';
 
 
 export default function BlogDashboard() {
@@ -29,6 +36,18 @@ export default function BlogDashboard() {
     const navigate = useAppNavigate();
     const [myBlogs,setMyBlogs]=useState<IDBBlog[]>([]);
     const [allBlogs,setAllBlogs]=useState<IDBBlog[]>([]);
+
+    const [anchorEl, setAnchorEl] =  useState<null | HTMLElement>(null);
+
+    const open = Boolean(anchorEl);
+
+    const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
 
     const handleFetchCurrentUserBlogs = async () => {
         const res=await BlogService.getMyBlogs();
@@ -42,8 +61,23 @@ export default function BlogDashboard() {
             setMyBlogs(res.data);
         }
         
-        console.log('@dashboard myBlogs',myBlogs)
         return res.success;
+    };
+
+    const handleLogout = async () => {
+        try {
+
+            await AuthService.logout();
+
+            localStorage.clear();
+
+            navigate("/login");
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            handleCloseMenu();
+        }
     };
 
     const handleFetchAllBlogs = async() => {
@@ -58,7 +92,6 @@ export default function BlogDashboard() {
             setAllBlogs(res.data);
         }
 
-        console.log('allBlogs',communityBlogs)
         return res.success;
     }
 
@@ -69,9 +102,6 @@ export default function BlogDashboard() {
         })()
     },[]);
 
-    // const myBlogs = blogs.filter(
-    // blog => blog.userId === currentUserId
-    // );
 
     const communityBlogs = allBlogs.filter(
     blog => blog.userId !== myBlogs[0]?.userId
@@ -97,12 +127,51 @@ export default function BlogDashboard() {
                     </div>
 
                     <Avatar
-                    sx={{
-                        bgcolor: '#0d9488',
-                    }}
-                    >
-                    R
-                    </Avatar>
+                        onClick={handleOpenMenu}
+                        sx={{
+                            bgcolor: "#0d9488",
+                            cursor: "pointer",
+                        }}
+                        >
+                        R
+                        </Avatar>
+
+                        <Menu
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleCloseMenu}
+                        >
+                        <MenuItem
+                            onClick={() => {
+                            navigate("/profile");
+                            handleCloseMenu();
+                            }}
+                        >
+                            <ListItemIcon>
+                            <User size={18} />
+                            </ListItemIcon>
+
+                            Profile
+                        </MenuItem>
+
+                        <Divider />
+
+                        <MenuItem
+                            onClick={handleLogout}
+                            sx={{
+                            color: "#dc2626",
+                            }}
+                        >
+                            <ListItemIcon>
+                            <LogOut
+                                size={18}
+                                color="#dc2626"
+                            />
+                            </ListItemIcon>
+
+                            Logout
+                        </MenuItem>
+                        </Menu>
                 </div>
             </Container>
         </header>
