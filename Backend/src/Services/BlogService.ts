@@ -80,6 +80,7 @@ class BlogService implements IBlogService {
 
     async getMyBlogs(req: Request): Promise<serviceReturnType<IBlog[]>> {
         const decodedValue = handleDecodeToken(req);
+        console.log('@BlogService decodedValue',decodedValue);
 
         const blogs = await this._blogRepository.findMany({
             userId: new Types.ObjectId(decodedValue.id),
