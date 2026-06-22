@@ -123,6 +123,10 @@ export default function CreateBlog() {
             ///setErrors({message:response.error as string});
             return response.success;
         }
+
+        alert("Hurray the blog is created");
+
+        return response.success;
     };
 
     return (
