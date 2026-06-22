@@ -1,10 +1,41 @@
 import { useNavigate } from "react-router-dom";
 import type { IDBBlog } from "../Interface/IBlog";
-import { Button, CardContent, Card, Chip, Typography } from "@mui/material";
+
+import {
+    Trash2
+} from "lucide-react";
+
+import {
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    IconButton,
+    Tooltip,
+    Typography,
+} from "@mui/material";
+
+import { BlogService } from "../api/Services/BlogService";
 
 export const BlogCard = ({ blog,IsMyBlog }: { blog: IDBBlog,IsMyBlog:boolean }) => {
 
     const navigate=useNavigate();
+
+    const handleDelete = async (blogId:string) => {
+        if (!blogId) return;
+
+        // S W A L
+
+        try {
+            
+            const res=await BlogService.deleteBlog(blogId);
+            return res.success;
+
+        } catch (error) {
+
+            console.error(error);
+        }
+    };
 
     return (
         <Card 
@@ -66,31 +97,48 @@ export const BlogCard = ({ blog,IsMyBlog }: { blog: IDBBlog,IsMyBlog:boolean }) 
                 ).toLocaleString()}
             </Typography>
 
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
 
-                <Button
-                size="small"
-                onClick={() =>
-                    navigate(`/blog/${blog._id}`)
-                }
-                >
-                View
-                </Button>
-
-                {IsMyBlog && (
                 <Button
                     size="small"
-                    variant="contained"
                     onClick={() =>
-                    navigate(`/blog/edit/${blog._id}`)
+                        navigate(`/blog/${blog._id}`)
                     }
-                    sx={{
-                    bgcolor: "#0d9488",
-                    }}
-                >
-                    Edit
-                </Button>
-                )}
+                    >
+                    View
+                    </Button>
+
+                    {IsMyBlog && (
+                    <>
+                        <Button
+                        size="small"
+                        variant="contained"
+                        onClick={() =>
+                            navigate(`/blog/edit/${blog._id}`)
+                        }
+                        sx={{
+                            bgcolor: "#0d9488",
+                            "&:hover": {
+                            bgcolor: "#0f766e",
+                            },
+                        }}
+                        >
+                        Edit
+                        </Button>
+
+                        <Tooltip title="Delete Blog">
+                        <IconButton
+                            size="small"
+                            onClick={()=>blog?._id && handleDelete(blog?._id)}
+                            sx={{
+                            color: "#dc2626",
+                            }}
+                        >
+                            <Trash2 size={18} />
+                        </IconButton>
+                        </Tooltip>
+                    </>
+                    )}
 
             </div>
 
