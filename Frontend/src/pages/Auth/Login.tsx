@@ -7,6 +7,7 @@ import { LoginFields } from "../../constant/register";
 import {GoogleIcon} from "../../components/googleIcon";
 import { AuthService } from "../../api/Services/AuthService";
 import { useAppNavigate } from "../../hooks/useNavigate";
+import { handleGoogleAuth } from "../../api/Services/GoogleAuth";
 
 const SignIn = () => {
     const [loginData,setLoginData]=useState<{email:string,password:string}>({email:"",password:""});
@@ -134,7 +135,11 @@ const SignIn = () => {
                 </div>
 
                 <div className="mt-6 grid grid-cols-1 gap-3">
-                <Button variant="outlined" fullWidth startIcon={<GoogleIcon />} sx={{ color: '#475569', borderColor: '#cbd5e1', textTransform: 'none', fontWeight: 600, py: 1 }}>
+                <Button 
+                onClick={handleGoogleAuth}
+                variant="outlined" fullWidth 
+                startIcon={<GoogleIcon />} 
+                sx={{ color: '#475569', borderColor: '#cbd5e1', textTransform: 'none', fontWeight: 600, py: 1 }}>
                     Google
                 </Button>
                 <div className="grid grid-cols-2 gap-3">

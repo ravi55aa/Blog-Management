@@ -6,6 +6,7 @@ import { UserRegisterFields } from "../../constant/register";
 import {GoogleIcon} from "../../components/googleIcon";
 import { AuthService } from "../../api/Services/AuthService";
 import { useAppNavigate } from "../../hooks/useNavigate";
+import { handleGoogleAuth } from "../../api/Services/GoogleAuth";
 
 const UserRegister = () => {
 
@@ -64,13 +65,6 @@ const UserRegister = () => {
 
     };
 
-
-    const handleGoogleAuth=async ()=>{
-        //import from .env
-        window.location.href ="http://localhost:4000/google/auth";
-        
-        return true;
-    }
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
