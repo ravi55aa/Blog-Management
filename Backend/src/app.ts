@@ -18,9 +18,19 @@ import { OauthRouter, authRouter, blogRouter } from './Routes';
 //application middlewares
 app.use(
     cors({
-        origin: [env.FRONTEND_LOCAL_URL,env.FRONTEND_PRODUCTION_URL,'https://blog-management-bay.vercel.app/'], //import form env
+        origin: [
+            env.FRONTEND_LOCAL_URL,
+            env.FRONTEND_PRODUCTION_URL,
+            "https://blog-management-bay.vercel.app"
+        ],
         credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+        methods: [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+        ],
     })
 );
 
