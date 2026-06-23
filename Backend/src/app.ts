@@ -18,7 +18,7 @@ import { OauthRouter, authRouter, blogRouter } from './Routes';
 //application middlewares
 app.use(
     cors({
-        origin: env.FRONTEND_URL, //import form env
+        origin: [env.FRONTEND_LOCAL_URL,env.FRONTEND_PRODUCTION_URL], //import form env
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     })
@@ -32,7 +32,6 @@ app.use(express.urlencoded({ extended: true })); //read form data
 //global router
 app.use((req: Request, res: Response, next: NextFunction) => {
     logger.info({ method: req.method, path: req.path }, 'Health Check');
-    console.log(process.env.NODE_ENV);
     next();
 });
 

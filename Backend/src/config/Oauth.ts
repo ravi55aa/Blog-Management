@@ -17,8 +17,8 @@ const GOOGLE_OAUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const CLIENT_ID = env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = env.GOOGLE_CLIENT_SECRET;
 
-console.log();
-const REDIRECT_URI = `${env.BACKEND_URL}/google/callback`;
+
+const REDIRECT_URI = `${env.BACKEND_PRODUCTION_URL}/google/callback`;
 
 export const handleOAuth = (req: Request, res: Response) => {
     const authUrl = new URL(GOOGLE_OAUTH_URL);
@@ -98,7 +98,7 @@ export const handleAuthCallback = async (req: Request, res: Response) => {
 
         //--END TOKEN GENERATION
 
-        res.redirect(`${env.FRONTEND_URL}/blog/dashboard`);
+        res.redirect(`${env.FRONTEND_PRODUCTION_URL}/blog/dashboard`);
     } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
             logger.error(

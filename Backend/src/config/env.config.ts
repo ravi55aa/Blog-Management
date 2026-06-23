@@ -12,9 +12,11 @@ const env = {
     JWT_SECRET: process.env.JWT_SECRET || '',
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || '',
 
-    FRONTEND_URL: process.env.FRONTEND_URL || '',
-    BACKEND_URL: process.env.BACKEND_URL || '',
-
+    FRONTEND_LOCAL_URL: process.env.FRONTEND_LOCAL_URL || '',
+    FRONTEND_PRODUCTION_URL: process.env.FRONTEND_PRODUCTION_URL || '',
+    BACKEND_LOCAL_URL: process.env.BACKEND_LOCAL_URL || '',
+    BACKEND_PRODUCTION_URL: process.env.BACKEND_PRODUCTION_URL || '',
+    
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || '',
 };

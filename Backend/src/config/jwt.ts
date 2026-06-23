@@ -28,7 +28,7 @@ export const handleJwtTokensGenerator = (payload: IJwtPayload, req: Request, res
         maxAge: 24 * 60 * 60 * 1000,
         path: '/',
         sameSite: 'lax',
-        secure: false,
+        secure: true,
     });
 
     //store in session.refreshToken
