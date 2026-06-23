@@ -29,14 +29,14 @@ const errorStream = rfs.createStream('error.log', {
 
 const transport =
     env.NODE_ENV === 'development'
-        ? {
-              target: 'pino-pretty',
-              options: {
-                  colorize: true,
-                  translateTime: 'SYS:standard',
-                  ignore: 'pid,hostname',
-              },
-          }
+            ? {
+                target: 'pino-pretty',
+                options: {
+                    colorize: true,
+                    translateTime: 'SYS:standard',
+                    ignore: 'pid,hostname',
+                },
+            }
         : undefined;
 
 export const logger = pino(

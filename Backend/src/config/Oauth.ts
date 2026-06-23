@@ -17,7 +17,7 @@ const CLIENT_ID = env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = env.GOOGLE_CLIENT_SECRET;
 
 console.log();
-const REDIRECT_URI = 'http://localhost:4000/google/callback';
+const REDIRECT_URI = `${env.BACKEND_URL}/google/callback`;
 
 export const handleOAuth = (req: Request, res: Response) => {
     const authUrl = new URL(GOOGLE_OAUTH_URL);

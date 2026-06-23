@@ -17,7 +17,7 @@ import { OauthRouter, authRouter, blogRouter } from './Routes';
 //application middlewares
 app.use(
     cors({
-        origin: 'http://localhost:5173', //import form env
+        origin: env.FRONTEND_URL, //import form env
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     })

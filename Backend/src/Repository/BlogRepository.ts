@@ -30,7 +30,8 @@ export class BlogRepository implements IBlogRepository {
             return await blogModel.findOne({
                 _id: blogId,
                 isDelete: false,
-            });
+            }).populate("userId","name email");
+
         } catch (error) {
             errorLogger.error(`[BlogRepository] Find blog error: ${error}`);
 

@@ -1,6 +1,6 @@
     export const handleGoogleAuth=async ()=>{
-        //import from .env
-        window.location.href ="http://localhost:4000/google/auth";
+
+        window.location.href = import.meta.env.VITE_GOOGLE_AUTH;
         
         return true;
     }

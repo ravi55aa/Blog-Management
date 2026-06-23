@@ -10,6 +10,7 @@ import { useAppNavigate } from "../../hooks/useNavigate";
 import { handleGoogleAuth } from "../../api/Services/GoogleAuth";
 
 const SignIn = () => {
+
     const [loginData,setLoginData]=useState<{email:string,password:string}>({email:"",password:""});
 
     const navigate=useAppNavigate();
