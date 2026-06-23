@@ -272,12 +272,7 @@ export default function CreateBlog() {
                     theme="snow"
                     value={htmlContent}
                     modules={modules}
-                    onChange={(
-                    html,
-                    delta,
-                    source,
-                    editor
-                    ) => {
+                    onChange={(html, delta, source, editor) => {
                     setHtmlContent(html);
 
                     setDeltaContent(
@@ -289,6 +284,7 @@ export default function CreateBlog() {
                         ...prev,
                         content: "",
                         }));
+                        console.log(delta,source);
                     }
                     }}
                 />

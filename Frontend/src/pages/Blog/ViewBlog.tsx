@@ -27,7 +27,7 @@ export default function BlogViewPage() {
     
     const {blogId} = useParams();
 
-    const [blog,setBlog]=useState<IDBBlog | null>();
+    const [blog,setBlog]=useState< IDBBlog| null>();
 
     useEffect(()=>{
 
@@ -92,7 +92,12 @@ export default function BlogViewPage() {
                     bgcolor: "#0d9488",
                 }}
                 >
-                { blog?.userId && blog?.userId?.name[0]?.toUpperCase() || 'R'}
+                {
+                    blog?.userId &&
+                    typeof blog.userId !== "string"
+                        ? blog.userId.name[0]?.toUpperCase()
+                        : "R"
+                    }
                 </Avatar>
 
                 <div>
@@ -102,7 +107,7 @@ export default function BlogViewPage() {
                         fontWeight: 700,
                     }}
                     >
-                    {blog?.userId?.name?.toUpperCase()}
+                    {blog?.userId && typeof blog?.userId !=="string" ? blog?.userId?.name?.toUpperCase() : "Ravi"  }
                     </Typography>
 
                 <div className="flex items-center gap-3 text-slate-500 text-sm">
@@ -128,6 +133,7 @@ export default function BlogViewPage() {
             {/* Content */}
             <Box
                 className="prose prose-slate max-w-none"
+                
                 sx={{
                 "& img": {
                     width: "100%",
@@ -154,8 +160,9 @@ export default function BlogViewPage() {
                     fontSize: "1.05rem",
                 },
                 }}
+
                 dangerouslySetInnerHTML={{
-                __html:blog && blog.contentHtml,
+                __html: blog?.contentHtml ?? "",
                 }}
             />
 
