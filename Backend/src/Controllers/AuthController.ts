@@ -56,9 +56,17 @@ class AuthController {
     }
 
     public async logout(req: Request, res: Response) {
-        res.clearCookie('token');
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+        });
 
-        req.session.destroy(() => {});
+        req.session.destroy((err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
 
         return res.status(StatusCodes.OK).json({
             success: true,
