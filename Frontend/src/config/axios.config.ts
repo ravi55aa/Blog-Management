@@ -6,7 +6,7 @@ export const axiosBaseURL = axios.create({
     
     withCredentials:true,
     
-    timeout:5000, //request time in milliseconds
+    timeout:50000, //request time in milliseconds
     
     headers : {
         'Content-Type': 'application/json'
