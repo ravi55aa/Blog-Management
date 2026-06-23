@@ -1,4 +1,4 @@
-import { CONTENT_DELTA_TYPE } from '../ISchemas/IBlogSchema';
+import type { CONTENT_DELTA_TYPE } from '../ISchemas/IBlogSchema';
 
 export interface IUpdateBlogDTO {
     title?: string;

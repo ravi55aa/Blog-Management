@@ -1,13 +1,14 @@
 import dotenv from 'dotenv';
-import { Request, Response } from 'express';
-import { IUser } from '../Interface/ISchemas/IUserSchema';
+import type { Request, Response } from 'express';
+import type { IUser } from '../Interface/ISchemas/IUserSchema';
 import userModel from '../Models/userModel';
-import axios, { AxiosResponse } from 'axios';
-import { GoogleTokenResponse, GoogleUserInfoResponse } from '../Interface/Other/oAuth';
+import type { AxiosResponse } from 'axios';
+import axios from 'axios';
+import type { GoogleTokenResponse, GoogleUserInfoResponse } from '../Interface/Other/oAuth';
 import env from './env.config';
 import { logger } from '../Utils/logger';
 import { handleJwtTokensGenerator } from './jwt';
-import { IJwtPayload } from '../Interface/Other/IPayloadJwt';
+import type { IJwtPayload } from '../Interface/Other/IPayloadJwt';
 import { StatusCodes } from '../Constant/StatusCode';
 
 dotenv.config();

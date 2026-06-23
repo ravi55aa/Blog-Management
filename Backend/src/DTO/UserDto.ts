@@ -1,5 +1,5 @@
-import { Request } from 'express';
-import { IUser } from '../Interface/ISchemas/IUserSchema';
+import type { Request } from 'express';
+import type { IUser } from '../Interface/ISchemas/IUserSchema';
 
 export class UserDto {
     static registerUser(req: Request): Partial<IUser> {

@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import type { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import mongoose from 'mongoose';
 import { MongoServerError } from 'mongodb';
 

@@ -4,7 +4,8 @@
 import 'reflect-metadata';
 import './config/DI/register';
 
-import express, { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
+import express from 'express';
 const app = express();
 import { logger } from './Utils/logger';
 import { StatusCodes } from './Constant/StatusCode';

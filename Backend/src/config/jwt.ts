@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import env from './env.config';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { errorLogger, logger } from '../Utils/logger';
-import { IJwtPayload } from '../Interface/Other/IPayloadJwt';
+import type { IJwtPayload } from '../Interface/Other/IPayloadJwt';
 
 const generateAccessToken = (payload: IJwtPayload): string => {
     return jwt.sign(payload, env.JWT_SECRET as string, {

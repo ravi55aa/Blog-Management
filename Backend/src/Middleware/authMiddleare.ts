@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { logger } from '../Utils/logger';
 import { StatusCodes } from '../Constant/StatusCode';
 import { env, handleCreateNewAccessToken, handleVerifyToken } from '../config';
-import { IJwtPayload } from '../Interface/Other/IPayloadJwt';
-import { JwtPayload } from 'jsonwebtoken';
+import type { IJwtPayload } from '../Interface/Other/IPayloadJwt';
+import type { JwtPayload } from 'jsonwebtoken';
 import { AuthMessage } from '../Constant/ResponseMessage';
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -92,7 +92,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     } catch (error) {
         logger.error(
             {
-                error: error,
+                error,
                 path: req.originalUrl,
             },
             'Auth middleware unexpected error'

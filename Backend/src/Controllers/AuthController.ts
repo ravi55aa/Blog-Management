@@ -48,23 +48,15 @@ class AuthController {
         }
     }
 
-    public async currentUser(
-        req: Request,
-        res: Response
-    ) {
-
+    public async currentUser(req: Request, res: Response) {
         return res.status(StatusCodes.OK).json({
             success: true,
             user: req.user,
         });
     }
 
-    public async logout(
-        req: Request,
-        res: Response
-        ) {
-
-        res.clearCookie("token");
+    public async logout(req: Request, res: Response) {
+        res.clearCookie('token');
 
         req.session.destroy(() => {});
 

@@ -1,4 +1,4 @@
-import { IBlog } from '../../Models/blogModel';
+import type { IBlog } from '../../Models/blogModel';
 
 export interface IBlogRepository {
     createBlog(blogData: Partial<IBlog>): Promise<IBlog | null>;

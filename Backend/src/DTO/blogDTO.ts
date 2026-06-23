@@ -1,4 +1,4 @@
-import { IBlog } from '../Models/blogModel';
+import type { IBlog } from '../Models/blogModel';
 
 class BlogDTO {
     //createBlog =>{all three} + updateblog+editBlog =>{partial of three} + validation(payload);

@@ -1,6 +1,6 @@
-import { Request } from 'express';
-import { IBlog } from '../../Models/blogModel';
-import { serviceReturnType } from '../../types/serviceReturnType';
+import type { Request } from 'express';
+import type { IBlog } from '../../Models/blogModel';
+import type { serviceReturnType } from '../../types/serviceReturnType';
 
 export interface IBlogService {
     createBlog(req: Request): Promise<serviceReturnType<IBlog>>;

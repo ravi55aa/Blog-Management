@@ -1,4 +1,5 @@
-import mongoose, { Document, Schema, Types } from 'mongoose';
+import type { Document, Types } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 type CONTENT_DELTA_TYPE = { ops: unknown[] };
 
 export interface IBlog extends Document {
