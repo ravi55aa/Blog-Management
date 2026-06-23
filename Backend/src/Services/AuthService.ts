@@ -7,7 +7,7 @@ import { IAuthRepository } from '../Interface/IRepository/IAuthRepository';
 import { Request, Response } from 'express';
 import { UserDto } from '../DTO/UserDto';
 import { compareHashPassword, hashPassword } from '../Utils/bcrypt';
-import { serviceReturnType } from '../types/serviceReturnType';
+import { serviceReturnType } from '../typesConfig/serviceReturnType';
 import { ApiResponse } from '../Helper/ApiResponse';
 import { handleJwtTokensGenerator } from '../config';
 import { BadRequestError, FailureError, NotFoundError } from '../Middleware/narrowDownError';

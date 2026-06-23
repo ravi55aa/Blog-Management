@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { Request } from 'express';
 import TYPES from '../config/DI/types';
-import { serviceReturnType } from '../types/serviceReturnType';
+import { serviceReturnType } from '../typesConfig/serviceReturnType';
 import { ApiResponse } from '../Helper/ApiResponse';
 import { BadRequestError, FailureError } from '../Middleware/narrowDownError';
 import { BlogMessage } from '../Constant/ResponseMessage';

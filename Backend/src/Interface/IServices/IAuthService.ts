@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import type { serviceReturnType } from '../../types/serviceReturnType';
+import type { serviceReturnType } from '../../typesConfig/serviceReturnType';
 import type { IUser } from '../ISchemas/IUserSchema';
 
 export interface IAuthService {
